@@ -1,41 +1,48 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.responses import JSONResponse
 from server import WebSocketServer
 from settings import WS_HOST, WS_PORT
+from contextlib import asynccontextmanager
 import uvicorn
-from fibonacci import calculate_fibonacci
+import uuid
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await server.init_redis()
+    yield
+    if server.redis:
+        await server.redis.aclose()
+
+app = FastAPI(lifespan=lifespan)
 server = WebSocketServer()
 
 @app.websocket("/")
 async def websocket_endpoint(websocket: WebSocket):
-    await server.connect(websocket)
+    client_id = str(uuid.uuid4())
+    await server.connect(websocket, client_id)
+
     try:
+        await websocket.send_json({
+            "type": "welcome",
+            "message": "Conectado ao servidor WebSocket",
+            "client_id": client_id
+        })
+
         while True:
-            await websocket.send_text("Menu de opções:\n1. Calcular Fibonacci\n2. Sair")
-
             message = await websocket.receive_text()
+            await server.handle_message(client_id, message)
 
-            if message == "1":
-                await websocket.send_text("Digite um número para calcular o Fibonacci:")
-                n = int(await websocket.receive_text())
-                fibonacci_result = calculate_fibonacci(n)
-                await websocket.send_text(f"Resultado do Fibonacci para {n}: {fibonacci_result}")
-            elif message == "2":
-                await websocket.send_text("Desconectando...")
-                await server.disconnect(websocket)
-                break
-            else:
-                await websocket.send_text("Opção inválida, tente novamente.")
     except WebSocketDisconnect:
-        await server.disconnect(websocket)
+        await server.disconnect(client_id)
+    except Exception as e:
+        print(f"Erro na conexão WebSocket: {e}")
+        await server.disconnect(client_id)
+
+
 
 def start_server():
     uvicorn.run(app, host=WS_HOST, port=WS_PORT)
 
-def main():
-    print("Servidor WebSocket iniciado...")
-    start_server()
-
 if __name__ == "__main__":
-    main()
+    print(f"Servidor WebSocket iniciado em ws://{WS_HOST}:{WS_PORT}/ws")
+    start_server()
