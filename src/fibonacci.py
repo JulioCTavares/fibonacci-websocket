@@ -1,3 +1,6 @@
+from functools import lru_cache
+
+@lru_cache(maxsize=100)
 def calculate_fibonacci(n: int) -> int:
     if n <= 0:
         return 0
