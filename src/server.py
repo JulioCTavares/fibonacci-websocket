@@ -4,10 +4,10 @@ from typing import Dict
 from fibonacci import calculate_fibonacci
 from datetime import datetime
 import redis.asyncio as redis
+from settings import REDIS_URL
 from starlette.websockets import WebSocketState
 import json
 
-REDIS_URL = "redis://localhost:6379"
 
 class WebSocketServer:
     def __init__(self):
