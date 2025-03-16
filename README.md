@@ -102,13 +102,39 @@ O repositório contém um **cliente WebSocket** (`client.py`) para testar a API.
 
 ### 🛠️ Rodando o cliente
 
-1. **Com a API rodando**, execute o cliente:
+1. **Crie um ambiente virtual (recomendado no modo full):**
+
+   ```sh
+   python3 -m venv .venv
+   ```
+
+2. **Ative o ambiente**
+
+   - Linux/MacOS:
+
+   ```sh
+   source venv/bin/activate
+   ```
+
+   - Windows
+
+   ```sh
+   venv\Scripts\activate
+   ```
+
+3. **Instale as dependências**
+
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+4. **Com a API rodando**, execute o cliente:
 
    ```sh
    python client.py
    ```
 
-2. **Funcionalidades do cliente**:
+5. **Funcionalidades do cliente**:
    - Permite **enviar um número** para calcular **Fibonacci(n)**.
    - Exibe **o resultado** do cálculo Fibonacci quando recebido do servidor.
 
