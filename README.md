@@ -44,34 +44,54 @@ A aplicação usa **perfis do Docker Compose**, permitindo rodar apenas o banco 
 
 4. **A API estará rodando em:**
    ```
-   ws://localhost:8000/ws
+   ws://localhost:8000/
    ```
 
 ---
 
 ### 🛠️ Rodando Manualmente (Sem Docker)
 
-1. **Instale as dependências**
+1. **Crie um ambiente virtual**
+
+   ```sh
+   python3 -m venv .venv
+   ```
+
+2. **Ative o ambiente**
+
+   - Linux/MacOS:
+
+   ```sh
+   source venv/bin/activate
+   ```
+
+   - Windows
+
+   ```sh
+   venv\Scripts\activate
+   ```
+
+3. **Instale as dependências**
 
    ```sh
    pip install -r requirements.txt
    ```
 
-2. **Suba um servidor Redis** (se não estiver usando Docker)
+4. **Suba um servidor Redis** (se não estiver usando Docker)
 
    ```sh
-   docker run -d --name redis -p 6379:6379 redis
+   docker-compose --profile db up --build
    ```
 
-3. **Inicie o servidor**
+5. **Inicie o servidor**
 
    ```sh
    python main.py
    ```
 
-4. **A API estará disponível em:**
+6. **O servidor estará disponível em:**
    ```
-   ws://localhost:8000/ws
+   ws://localhost:8000/
    ```
 
 ---
@@ -89,7 +109,6 @@ O repositório contém um **cliente WebSocket** (`client.py`) para testar a API.
    ```
 
 2. **Funcionalidades do cliente**:
-   - Exibe a **hora atual** recebida da API em tempo real.
    - Permite **enviar um número** para calcular **Fibonacci(n)**.
    - Exibe **o resultado** do cálculo Fibonacci quando recebido do servidor.
 
