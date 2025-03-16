@@ -49,7 +49,7 @@ A aplicação usa **perfis do Docker Compose**, permitindo rodar apenas o banco 
 
 ---
 
-### 🛠️ Rodando Manualmente (Sem Docker)
+### 🛠️ Rodando Apenas o Banco de Dados no Docker
 
 1. **Crie um ambiente virtual**
 
@@ -77,7 +77,7 @@ A aplicação usa **perfis do Docker Compose**, permitindo rodar apenas o banco 
    pip install -r requirements.txt
    ```
 
-4. **Suba um servidor Redis** (se não estiver usando Docker)
+4. **Suba um servidor Redis**
 
    ```sh
    docker-compose --profile db up --build
