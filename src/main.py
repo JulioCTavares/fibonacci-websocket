@@ -44,5 +44,5 @@ def start_server():
     uvicorn.run(app, host=WS_HOST, port=WS_PORT)
 
 if __name__ == "__main__":
-    print(f"Servidor WebSocket iniciado em ws://{WS_HOST}:{WS_PORT}/ws")
+    print(f"Servidor WebSocket iniciado em ws://{WS_HOST}:{WS_PORT}/")
     start_server()
